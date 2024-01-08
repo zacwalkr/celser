@@ -1,10 +1,14 @@
-# Deer activity threatens rear-edge populations of an endemic alpine daisy, even with targeted feral animal control
+# Rear-edge populations of a threatened high mountain daisy are most impacted by invasive Sambar deer, even with targeted feral animal control
 John Morgan and Zac Walker
 
 ## About
-This repository contains the code and data associated with an unpublished manuscript. The paper assesses the impact of sambar deer in populations of the rare endemic alpine daisy Celmisia sericophylla. These analyses were done using R version 4.2.3.
+This repository contains the code and data associated with an unpublished manuscript. The paper assesses the impact of sambar deer in populations of the rare endemic alpine daisy Celmisia sericophylla. These analyses were done using R version 4.2.0.
 
 ## Abstract
-
+Management of endangered species requires that threats to their persistence are identified and then mitigated by management actions. We document how an invasive ungulate that has recently and rapidly colonised Australian high mountain vegetation, Sambar deer (Cervus unicolor), impacts a threatened alpine daisy (Celmisia sericophylla, Silky Snow Daisy), and the effectiveness of management actions on threat reduction. We document impacts of deer on individual Celmisia populations in relation to landscape context (distance from treeline) and herbivore control intensity by the land manager. Despite lethal control being conducted across the landscape, we detected evidence of Sambar deer at 46% of Celmisia populations sampled, and found that rear-edge populations - nearest the treeline - were at highest risk of being impacted relative to higher elevation populations in treeless areas. The impact of Sambar deer on Celmisia ranged from low level browsing of foliage and/or flowers (the commonest form of impact observed, at 25% of sites) to severe trampling and browsing (at 5% of sites). The probability of deer occupancy was higher with an increasing number of deer controlled within a 2 km radius of Celmisia populations. This points to an ongoing and potentially predictable dispersal of Sambar deer into the alpine zone from subalpine forests, with such movements negatively affecting populations of Celmisia nearest the purported invasion pathways, despite ongoing lethal control.  Given the limited success of deer control programs to eliminate activity nearest the rear-edge populations, we recommend that landscape-scale Sambar deer management needs to ramp-up in frequency and/or intensity near alpine treelines where most detrimental  impacts to Celmisia populations are currently being observed.
 
 ## Description of the data and file structure.
+There is one data file and one R script in this repository.
+
+The csv data file 'celser.csv' contains survey data from 57 populations of Celmisia sericophylla that were visisted in summer 2022. Each population has a unique site name and lat longs. There are environmental covariates associated with each site including elevation, slope, patch size and distance to trees. There is also columns for the number of deer culled (2019-2022) within 500m and 2000m of each population.
+The R script 'celmisia_analysis.R' contains the code used for the analysis and creating figures 1 and 2 of the manuscript.
