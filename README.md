@@ -10,5 +10,5 @@ Management of endangered species requires that threats to their persistence are 
 ## Description of the data and file structure.
 There is one data file and one R script in this repository.
 
-The csv data file 'celser.csv' contains survey data from 57 populations of Celmisia sericophylla that were visisted in summer 2022. Each population has a unique site name and lat longs. There are environmental covariates associated with each site including elevation, slope, patch size and distance to trees. There is also columns for the number of deer culled (2019-2022) within 500m and 2000m of each population.
+The csv data file 'celser.csv' contains survey data from 57 populations of Celmisia sericophylla that were visisted in summer 2022. Each population has a unique site name and lat longs. There are environmental covariates associated with each site including elevation, slope, patch size, distance to trees and track density. There is also columns for the number of deer culled (2019-2022) within 500m and 2000m of each population.
 The R script 'celmisia_analysis.R' contains the code used for the analysis and creating figures 1 and 2 of the manuscript.
