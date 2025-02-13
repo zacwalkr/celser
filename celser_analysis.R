@@ -5,6 +5,9 @@ library(car)
 library(vegan)
 library(cowplot)
 library(ggpubr)
+library(modelsummary)
+rm(list = ls())
+
 
 ###read in data
 cel <- read.csv("celser_data.csv")
@@ -14,8 +17,8 @@ cor(cel[c("trees","elev", "patch_sqrt","track_sqrt", "slope", "deer1000")],
     method = "spearman")
 
 ###run global binomial glm
-mod0 <- glm(deer_binary ~ trees  + elev + patch_sqrt + 
-              track_sqrt + slope + deer1000, 
+mod0 <- glm(deer_binary ~ scale(trees) + scale(elev) + scale(patch_sqrt) + 
+            scale(track_sqrt) + scale(slope) + scale(deer1000),
             family = binomial(link = "logit"),
             na.action = "na.fail", data = cel)
 
@@ -29,10 +32,10 @@ aa <- dredge(mod0, rank = "AICc")
 bb <- aa %>% filter(delta < 2)
 
 ### fit each of the top performing models
-mod1 <- glm(deer_binary ~ trees  + patch_sqrt + deer1000 + elev, family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
-mod2 <- glm(deer_binary ~ trees  + patch_sqrt + deer1000, family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
-mod3 <- glm(deer_binary ~ trees  + patch_sqrt + track_sqrt + deer1000, family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
-mod4 <- glm(deer_binary ~ trees  + patch_sqrt + track_sqrt, family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
+mod1 <- glm(deer_binary ~ scale(trees)  + scale(patch_sqrt) + scale(deer1000) + scale(elev), family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
+mod2 <- glm(deer_binary ~ scale(trees)  + scale(patch_sqrt) + scale(deer1000), family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
+mod3 <- glm(deer_binary ~ scale(trees)  + scale(patch_sqrt) + scale(track_sqrt) + scale(deer1000), family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
+mod4 <- glm(deer_binary ~ scale(trees)  + scale(patch_sqrt) + scale(track_sqrt), family = binomial(link = "logit"),  na.action = "na.fail", data = cel)
 
 #create model selection object then average parameters 
 mods <- model.sel(mod1,mod2,mod3,mod4)
@@ -42,6 +45,15 @@ mod.av <- model.avg(mods)
 summary(mod.av)
 confint(mod.av, full = TRUE)
 coefTable(mod.av, full = TRUE)
+
+modelsummary(mod0)
+b <- list(geom_vline(xintercept = 0, color = 'orange'))
+modelplot(mod.av, coef_omit = c(),  background = b, coef_rename = c("intercept",
+                                                                          "distance to trees",
+                                                                          "patch size",
+                                                                          "deer culled",
+                                                                          "elevation",
+                                                                          "track density"))
 
 
 ### predict main effects that were present in the top performing models
@@ -143,8 +155,7 @@ plotb <- ggplot(newdat3, aes(x = patch_sqrt, y = predicted_probs))+
   geom_ribbon(aes(ymin = lower_ci, ymax = upper_ci), alpha = 0.25)+
   theme_cowplot(12)+
   xlab(bquote("Patch size "(sqrt(m^2))))+
-  ylab(" ")+
-  geom_text(aes(x = 5, y = 0.9), label = "*", size = 8)
+  ylab(" ")
 
 plotc <- ggplot(newdat1, aes(x = trees, y = predicted_probs))+
   geom_line()+
@@ -152,8 +163,7 @@ plotc <- ggplot(newdat1, aes(x = trees, y = predicted_probs))+
   geom_ribbon(aes(ymin = lower_ci, ymax = upper_ci), alpha = 0.25)+
   theme_cowplot(12)+
   xlab("Distance to treeline (m)")+
-  ylab("Probability of deer impact")+
-  geom_text(aes(x = 105, y = 0.9), label = "**", size = 8)
+  ylab("Probability of deer impact")
 
 plotd <- ggplot(newdat2, aes(x = track_sqrt, y = predicted_probs))+
   geom_line()+
@@ -220,4 +230,3 @@ testDispersion(simulationOutput) # no dispersion
 testOutliers(simulationOutput, type = "binomial") #no outliers
 
 #
-
